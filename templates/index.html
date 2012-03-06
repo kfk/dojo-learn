@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Demo: Progammatic Layout</title>
+		<link rel="stylesheet" href="../../../resources/style/demo.css" media="screen">
+		<link rel="stylesheet" href="style.css" media="screen">
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.7.1/dijit/themes/claro/claro.css" media="screen">
+		<!-- load dojo and provide config via data attribute -->
+		<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.1/dojo/dojo.js"
+				data-dojo-config="async: true">
+		</script>
+		<script>
+			require(["dojo/io/script",
+				"dijit/layout/BorderContainer", 
+				"dijit/layout/TabContainer", 
+				"dijit/layout/ContentPane", 
+				"dijit/layout/AccordionContainer",
+				"dojo/domReady!"],
+			function(script, BorderContainer, TabContainer,ContentPane, AccordionContainer){
+				// create the BorderContainer and attach it to our appLayout div
+				var appLayout = new BorderContainer({
+					design: "headline"
+				}, "appLayout");
+
+
+				// create the TabContainer
+				var contentTabs = new TabContainer({
+					region: "center",
+					id: "contentTabs",
+					tabPosition: "top",
+					"class": "centerPanel",
+					href: "contentCenter.html"
+				})
+
+				// add the TabContainer as a child of the BorderContainer
+				appLayout.addChild( contentTabs );
+
+				// create and add the BorderContainer edge regions
+				appLayout.addChild(
+					new ContentPane({
+						region: "top",
+						"class": "edgePanel",
+						content: "Header content (top)"
+					})
+				)
+				accordionContainer = new AccordionContainer({
+						region: "left",
+						id: "leftCol", "class": "edgePanel",
+						content: "Sidebar content (left)",
+						splitter: true
+					});
+				var t = JSON.parse((script.get({url:"http://127.0.0.1:5000/json"})));
+				//alert(t.a);
+
+				var l = [1,2,3];
+				for (i in l){
+					accordionContainer.addChild(new ContentPane({
+					title: l[i],
+					content: "Does it work?"
+				}))};
+					accordionContainer.addChild(new ContentPane({
+					title: "Test2",
+					content: "Does it work?"
+				}));
+				appLayout.addChild(accordionContainer);	
+
+				// Add initial content to the TabContainer
+				contentTabs.addChild(
+					new ContentPane({	
+						title: "Group 1"
+					})
+				)
+				contentTabs.addChild(
+					new ContentPane({	
+						title: "Group 2"
+					})
+				)
+
+				// start up and do layout
+				appLayout.startup();
+			});
+		</script>
+	</head>
+	<body class="claro">
+		<div id="appLayout" class="demoLayout"></div>
+	</body>
+</html>
+
