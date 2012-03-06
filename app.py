@@ -12,7 +12,7 @@ def index():
 @app.route('/json')
 def get_json():
 	d = {'a':'b','alessio':'civitillo'}
-	return json.dumps(d)
+	return jsonify(d)
 
 if __name__=='__main__':
 	app.run()
